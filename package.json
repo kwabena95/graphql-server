@@ -1,0 +1,27 @@
+{
+  "name": "graphql-server",
+  "version": "1.0.0",
+  "description": "## Description A customer base server-side GraphQL application that will allow a CRUD functionality.",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwabena95/graphql-server.git"
+  },
+  "author": "Ebenezer Kankam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kwabena95/graphql-server/issues"
+  },
+  "homepage": "https://github.com/kwabena95/graphql-server#readme",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "graphql": "^15.5.0"
+  }
+}
