@@ -8,6 +8,7 @@ const {
     GraphQLNonNull,
 } = require('graphql');
 
+const customerDataAPi = "http://localhost:3000/customers";
 
 // Customer type
 const CustomerType = new GraphQLObjectType({
@@ -39,21 +40,96 @@ const RootQuery = new GraphQLObjectType({
 
                 // }
 
-                return axios.get(`http://localhost:3000/customers/${args.id}`)
+                return axios.get(`${customerDataAPi}/${args.id}`)
                     .then(res => res.data)
             }
         },
         customers: {
             type: new GraphQLList(CustomerType),
             resolve(parentValue, args) {
-                return axios.get(`http://localhost:3000/customers`)
+                return axios.get(customerDataAPi)
                     .then(res => res.data)
             }
         }
     }
 
+});
+
+// Mutation
+const mutation = new GraphQLObjectType({
+    name: "Mutation",
+    fields: {
+        addCustomer: {
+            type: CustomerType,
+            args: {
+                name: {
+                    // GraphQLNonNull means a field is required.
+                    // So name will be required
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                email: {
+                    // GraphQLNonNull means a field is required.
+                    // So email will be required
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                age: {
+                    // GraphQLNonNull means a field is required.
+                    // So age will be required
+                    type: new GraphQLNonNull(GraphQLInt)
+                }
+            },
+            resolve(parentValue, args) {
+                return axios.post(customerDataAPi, {
+                    name: args.name,
+                    age: args.age,
+                    email: args.email
+                })
+                    .then(res => res.data);
+            }
+        },
+        deleteCustomer: {
+            type: CustomerType,
+            args: {
+                id: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+
+            },
+            resolve(parentValue, args) {
+                return axios.delete(`${customerDataAPi}/${args.id}`)
+                    .then(res => res.data);
+            }
+        },
+        editCustomer: {
+            type: CustomerType,
+            args: {
+                id: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                name: {
+
+                    type: GraphQLString
+                },
+                email: {
+
+                    type: GraphQLString
+                },
+                age: {
+
+                    type: GraphQLInt
+                }
+
+            },
+            resolve(parentValue, args) {
+                return axios.patch(`${customerDataAPi}/${args.id}`, args)
+                    .then(res => res.data);
+            }
+        },
+
+    }
 })
 
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation
 })
