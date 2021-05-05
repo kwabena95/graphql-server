@@ -1,4 +1,4 @@
-# graphql-server
+# GraphQL-Server
 
-##Description
+## Description
 A customer base server-side GraphQL
